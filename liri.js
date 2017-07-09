@@ -1,44 +1,34 @@
-// Node module imports
-// reads file system package
-var fs = require("fs");
-var request = require("request");
-var keys = require("./keys.js");
-var twitter = require ("twitter");
-var client = new twitter(keys.twitterKeys);
-var spotify = require ("node-spotify-api");
-var command = process.argv[2];
-var nodeArgv = process.argv;
+  // Node module imports
+  // reads file system package
+  var fs = require("fs");
+  var request = require("request");
+  var keys = require("./keys.js");
+  var twitter = require ("twitter");
+  var client = new twitter(keys.twitterKeys);
+  var spotify = require ("node-spotify-api");
+  var command = process.argv[2];
+  var nodeArgv = process.argv;
 
-//movie or song
-var x = "";
-//attaches multiple word arguments
-for (var i=3; i<nodeArgv.length; i++){
-  if(i>3 && i<nodeArgv.length){
-    x = x + "+" + nodeArgv[i];
-  } else{
-    x = x + nodeArgv[i];
-  }
-}
 
 // Commands with switch case
-switch(command) {
-  case "my-tweets":
-    myTweets();
-    break;
-  case "spotify-this-song":
-    spotifyThisSong();
-    break;
-  case "movie-this":
-    movieThis();
-    break;
-  case "do-what-it-says":
-    doWhatItSays();
-    break;
+  switch(command) {
+    case "my-tweets":
+      myTweets();
+      break;
+    case "spotify-this-song":
+      spotifyThisSong();
+      break;
+    case "movie-this":
+      movieThis();
+      break;
+    case "do-what-it-says":
+      doWhatItSays();
+      break;
 
-  default:
-    console.log("{node liri.js + : my-tweets, spotify-this-song, movie-this, do-what-it-says}")
-    break;
-}
+    default:
+      console.log("{node liri.js + : my-tweets, spotify-this-song, movie-this, do-what-it-says}")
+      break;
+  }
 
   function myTweets(){
     //Display last 20 Tweets
@@ -49,7 +39,6 @@ switch(command) {
           console.log(response);
           var date = tweets[i].created_at;
           console.log("@salmui_: " + tweets[i].text + " Created At: " + date.substring(0, 19));
-          console.log("-----------------------");
         }
       }else{
         console.log('Error');
@@ -91,35 +80,35 @@ switch(command) {
 	};
 
   // Movie function, uses the Request module to call the OMDB api
-function movieThis(){
-  var movie = process.argv[3];
-  if(!movie){
-    movie = "Wonder Woman";
-  }
-  params = movie
-  request("http://www.omdbapi.com/?t=" + params + "&y=&plot=short&r=json&tomatoes=true", function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var movieObject = JSON.parse(body);
-      //console.log(movieObject)
-      var movieResults =
-      "Title: " + movieObject.Title
-      "Year: " + movieObject.Year
-      "Imdb Rating: " + movieObject.imdbRating
-      "Country: " + movieObject.Country
-      "Language: " + movieObject.Language
-      "Plot: " + movieObject.Plot
-      "Actors: " + movieObject.Actors
-      "Rotten Tomatoes Rating: " + movieObject.tomatoRating
-      "Rotten Tomatoes URL: " + movieObject.tomatoURL
-
-      console.log(movieResults);
-      log(movieResults); // calling log function
-    } else {
-      console.log("Error :"+ error);
-      return;
+  function movieThis(){
+    var movie = process.argv[3];
+    if(!movie){
+      movie = "Wonder Woman";
     }
-  });
-};
+    params = movie
+    request("http://www.omdbapi.com/?&t=" + params + "&apikey=40e9cece", function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var movieObject = JSON.parse(body);
+        //console.log(movieObject)
+        var movieResults =
+        ("Title: " + movieObject.Title);
+        ("Year: " + movieObject.Year);
+        ("Imdb Rating: " + movieObject.imdbRating);
+        ("Country: " + movieObject.Country);
+        ("Language: " + movieObject.Language);
+        ("Plot: " + movieObject.Plot);
+        ("Actors: " + movieObject.Actors);
+        ("Rotten Tomatoes Rating: " + movieObject.tomatoRating);
+        ("Rotten Tomatoes URL: " + movieObject.tomatoURL);
+
+        console.log(movieResults);
+        log(movieResults); // calling log function
+      } else {
+        console.log("Error :"+ error);
+        return;
+      }
+    });
+  };
 	// Do What It Says function
 	function doWhatItSays() {
 		fs.readFile("random.txt", "utf8", function(error, data){
